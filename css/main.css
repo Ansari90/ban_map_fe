@@ -1,7 +1,22 @@
+/*body {*/
+/*  background-color: #fcfaf7!important;*/
+/*}*/
+
+#map_id {
+  height: 500px;
+  width: 100%;
+}
+
+.be-box-shadow-right {
+  box-shadow: 12px 12px 18px 0px rgba(0,0,0,0.07);
+}
+.be-box-shadow-left {
+  box-shadow: -12px 12px 18px 0px rgba(0,0,0,0.07);
+}
+
 .be-background-blue {
   background-color: #8ac9ed;
 }
-
 
 .be-btn-green-then-blue {
   background-color: #bddc04 !important;
@@ -14,3 +29,34 @@
   background-color: #8ac9ed !important;
   border-color:  #8ac9ed !important;
 }
+
+.scrollable {
+  height: 450px;
+  overflow-y: scroll;
+}
+
+.list-item-hover {
+  background-color: #ffffff !important;
+  transition: background-color .5s;
+}
+
+.list-item-hover:hover {
+  background-color: palegoldenrod !important;
+}
+
+.carousel-control {
+  background-color: #bddc04 !important;
+}
+
+.center-carousel-text {
+  text-align: center;
+}
+
+.composter-list-item-hover:hover {
+  color: black !important;
+  background-color: greenyellow !important;
+  transition: background-color 1s;
+  transition: color 1s;
+}
+
+

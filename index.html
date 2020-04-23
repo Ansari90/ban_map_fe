@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="css/main.css">
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
 
   <meta name="theme-color" content="#8ac9ed">
 </head>
@@ -40,10 +43,133 @@
     </div>
   </div>
 
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-3 be-box-shadow-right">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col mb-3 mt-2">
+              <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active center-carousel-text">
+                    <h4>10 million people</h4>
+                  </div>
+                  <div class="carousel-item center-carousel-text">
+                    <h4>Ban in 3 months</h4>
+                  </div>
+                  <div class="carousel-item center-carousel-text">
+                    <h4>17 sites</h4>
+                  </div>
+                </div>
+                <a class="carousel-control-prev carousel-control" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next carousel-control" href="#carouselExampleControls" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col scrollable">
+              <ul class="list-group">
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Atlanta</span>
+                  <span class="badge badge-success badge-pill">&#10003;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Chicago</span>
+                  <span class="badge badge-warning badge-pill">&#9021;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Houston</span>
+                  <span class="badge badge-danger badge-pill">&#10007;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>New York</span>
+                  <span class="badge badge-success badge-pill">&#10003;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Austin</span>
+                  <span class="badge badge-warning badge-pill">&#9021;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Tampa</span>
+                  <span class="badge badge-danger badge-pill">&#10007;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Los Angeles</span>
+                  <span class="badge badge-success badge-pill">&#10003;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Seattle</span>
+                  <span class="badge badge-warning badge-pill">&#9021;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Boston</span>
+                  <span class="badge badge-danger badge-pill">&#10007;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Denver</span>
+                  <span class="badge badge-success badge-pill">&#10003;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Salt Lake City</span>
+                  <span class="badge badge-warning badge-pill">&#9021;</span>
+                </li>
+                <li class="list-group-item list-item-hover d-flex justify-content-between align-items-center">
+                  <span>Tennessee</span>
+                  <span class="badge badge-danger badge-pill">&#10007;</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div id="map_id"></div>
+      </div>
+      <div class="col-3 be-box-shadow-left">
+        <div class="container-fluid">
+          <div class="row">
+
+          </div>
+          <div class="row">
+            <div class="col mb-3 mt-2">
+              <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active composter-list-item-hover" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Compost Now</a>
+                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Compost With Me</a>
+                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Green Earth</a>
+                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Terra True</a>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">The time is to... Compost Now!</div>
+                <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">Compost with me and save the planet!</div>
+                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Green Earth, Great Earth!</div>
+                <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Stay true to your Terra!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts and shit -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+          integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+          crossorigin=""></script>
+  <script src="./js/leaflet-providers.js"></script>
+  <script src="./js/main.js"></script>
 </body>
 
 </html>
