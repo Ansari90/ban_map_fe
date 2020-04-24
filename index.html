@@ -29,33 +29,37 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-4 mb-3 mt-2">
+      <div class="col-6 mb-3 mt-2">
         <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Logo_2.png">
       </div>
-      <div class="col-4 mb-3 mt-3">
-        <h1 class="display-4 be-font">Holistic Solutions</h1>
-      </div>
-      <div class="col-4 mb-3 mt-4">
-        <div class="input-group mb-2 mt-2">
-          <input type="text" class="form-control" placeholder="Where are you?" aria-label="User's City" aria-describedby="button-addon2">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary be-btn-green-then-blue" type="button" id="button-addon2">Find Services</button>
-          </div>
-        </div>
+      <div class="col-6 mb-3 mt-3">
+        <h1 class="display-3 be-font">Holistic Solutions</h1>
       </div>
     </div>
   </div>
 
   <div class="container-fluid">
+
+    <!--- Leftmost Column --->
     <div class="row">
       <div class="col-3 be-box-shadow-right">
         <div class="container-fluid">
+
+          <!--- Message Card Carousel --->
           <div class="row">
             <div class="col mb-3 mt-2">
               <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active center-carousel-text">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="width: 14rem;">
+                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png" class="card-img-top card-image-size" alt="...">
+                      <div class="card-body">˚
+                        <h5 class="card-title">Card title</h5>˚
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item center-carousel-text">
+                    <div class="card" style="width: 14rem;">
                       <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png" class="card-img-top card-image-size" alt="...">
                       <div class="card-body">
                         <h5 class="card-title">Card title</h5>
@@ -63,15 +67,7 @@
                     </div>
                   </div>
                   <div class="carousel-item center-carousel-text">
-                    <div class="card" style="width: 18rem;">
-                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png" class="card-img-top card-image-size" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="carousel-item center-carousel-text">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="width: 14rem;">
                       <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png" class="card-img-top card-image-size" alt="...">
                       <div class="card-body">
                         <h5 class="card-title">Card title</h5>
@@ -90,6 +86,7 @@
               </div>
             </div>
           </div>
+          <!--- State List --->
           <div class="row">
             <div class="col scrollable scrollable-height">
               <ul class="list-group">
@@ -144,56 +141,40 @@
               </ul>
             </div>
           </div>
+
         </div>
       </div>
+
+      <!--- Central Column --->
       <div class="col-6">
         <div class="container-fluid">
+
+          <!--- Map Controls --->
           <div class="row">
             <div class="col">
               <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                  </ul>
                   <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <div class="input-group mb-2 mt-2">
+                      <input type="text" class="form-control" placeholder="Where are you?" aria-label="User's City" aria-describedby="button-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary be-btn-green-then-blue" type="button" id="button-addon2">Find Services</button>
+                      </div>
+                    </div>
                   </form>
                 </div>
               </nav>
             </div>
           </div>
+
+          <!--- Map --->
           <div class="row">
             <div class="col">
               <div id="map_id"></div>
             </div>
           </div>
-        </div>
-        <div class="container-fluid">
+
+          <!--- Cities Details --->
           <div class="row">
             <div class="col-6">
               <div class="tab-content" id="nav-city-tabContent">
@@ -249,25 +230,31 @@
           </div>
         </div>
       </div>
+
+      <!--- Rightmost Column --->
       <div class="col-3 be-box-shadow-left">
         <div class="container-fluid">
+
+          <!--- Composter Details --->
           <div class="row">
-            <div class="col mb-3 mt-2 scrollable">
-              <div class="list-group" id="list-tab" role="tablist">
-                <a class="list-group-item list-group-item-action active composter-list-item-hover" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Compost Now</a>
-                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Compost With Me</a>
-                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Green Earth</a>
-                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Terra True</a>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col scrollable">
+            <div class="col scrollable mb-4 mt-2">
               <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">The time is to... Compost Now!</div>
                 <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">Compost with me and save the planet!</div>
                 <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Green Earth, Great Earth!</div>
                 <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Stay true to your Terra!</div>
+              </div>
+            </div>
+          </div>
+
+          <!--- Composter List --->
+          <div class="row">
+            <div class="col scrollable">
+              <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active composter-list-item-hover" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Compost Now</a>
+                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Compost With Me</a>
+                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Green Earth</a>
+                <a class="list-group-item list-group-item-action composter-list-item-hover" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Terra True</a>
               </div>
             </div>
           </div>
