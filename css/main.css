@@ -32,6 +32,10 @@
   box-shadow: -12px 12px 18px 0px rgba(0,0,0,0.07);
 }
 
+.be-box-shadow-center {
+  box-shadow: -12px 12px 18px 0px rgba(0,0,0,0.07);
+}
+
 .be-background-blue {
   background-color: #8ac9ed;
 }
@@ -91,4 +95,8 @@
   background-color: #bddc04 !important;
 }
 
+.tab-border {
+  padding-bottom: 1rem;
+  border-bottom: antiquewhite 3px solid;
+}
 

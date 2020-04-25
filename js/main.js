@@ -11,9 +11,13 @@ info.onAdd = function (MAP) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-  this._div.innerHTML = '<h4>Texas</h4>' +  (props ?
+  this._div.innerHTML = '<h3>Texas</h3>' +  (props ?
     '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-    : 'Hover over a state');
+    : `
+    <h5>Senator: John Howard</h5>
+    <p>Cities: 10</p>
+    <p>Population: 12 million</p>
+    `);
 };
 
 info.addTo(MAP);
