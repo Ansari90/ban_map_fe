@@ -57,11 +57,12 @@
 }
 
 .scrollable-height {
-  height: 450px;
+  height: 30rem;
 }
 
 .scrollable-height-bottom {
-  height: 10rem;
+  margin-top: .5rem;
+  height: 12rem;
 }
 
 .scrollable {
@@ -74,7 +75,7 @@
 }
 
 .list-item-hover:hover {
-  background-color: palegoldenrod !important;
+  background-color: #bddc04 !important;
 }
 
 .center-carousel-text {
@@ -100,3 +101,23 @@
   border-bottom: antiquewhite 3px solid;
 }
 
+.whole-padding{
+  padding-top: 2rem;
+}
+
+.be-card {
+  background-color: #fcfaf7 !important;
+  /*width: 18rem;*/
+}
+
+.carousel-container {
+  height: 16rem;
+}
+
+.blog-card {
+  cursor: pointer !important;
+}
+
+.range-input {
+  padding-left: 2rem;
+}
