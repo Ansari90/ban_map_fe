@@ -135,10 +135,13 @@ Object.keys(DATA).forEach(key => {
 
 function showCitiesFor(state_key) {
   CITY_LIST.innerHTML = '';
+  let searchList = [];
 
   DATA[state_key].cities.forEach((city, index) => {
+    searchList.push(city.city)
     CITY_LIST.innerHTML += `
       <li
+          id="${city.city.replace(' ', '_')}"
           class="list-group-item list-item-hover d-flex justify-content-between align-items-center"
           onclick="showDataFor('${state_key}', '${index}')"
       >
@@ -147,6 +150,14 @@ function showCitiesFor(state_key) {
     `
   });
 
+  $('#cityInput').autocomplete({
+    source: searchList
+  });
+  $('#cityInput').on( "autocompleteselect", function( event, ui ) {
+    let city_id = ui.item.value.replace(' ', '_')
+    $(`#${city_id}`).click();
+    document.getElementById(city_id).scrollIntoView(true);
+  } );
   showDataFor(state_key, 0);
 }
 

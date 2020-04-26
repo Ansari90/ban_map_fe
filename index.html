@@ -11,7 +11,7 @@
   <!-- Place favicon.ico in the root directory -->
 
   <link rel="stylesheet" href="css/main.css">
-
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -120,14 +120,6 @@
               </nav>
             </div>
           </div>
-          <!--
-          <div class="input-group mb-2 mt-2">
-            <input type="text" class="form-control" placeholder="Where are you?" aria-label="User's City" aria-describedby="button-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary be-btn-green-then-blue" type="button" id="button-addon2">Find Services</button>
-            </div>
-          </div>
-          -->
 
           <!--- Map --->
           <div class="row">
@@ -139,17 +131,20 @@
           <!--- Cities Details --->
           <div class="row">
             <div class="col-6 scrollable scrollable-height-bottom">
+              <div class="input-group">
+                <input id="cityInput" type="text" class="form-control" placeholder="Where are you?" aria-label="User's City" aria-describedby="button-addon2">
+              </div>
+              <div class="input-group">
+                <span class="range-input">Searching within&nbsp</span>
+                <label id="composter_radius" for="radius">20 miles</label>&nbsp
+                <input type="range" id="radius" name="radius" min="0" max="100" value="20">
+              </div>
               <div class="card be-card">
                 <div id="cityCard" class="card-body">
                 </div>
               </div>
             </div>
             <div class="col-6 be-box-shadow-center">
-              <div class="input-group mb-2 mt-3">
-                <span class="range-input">Searching within&nbsp</span>
-                <label id="composter_radius" for="radius">20 miles</label>&nbsp
-                <input type="range" id="radius" name="radius" min="0" max="100" value="20">
-              </div>
               <div class="scrollable scrollable-height-bottom">
                 <ul id="cityList" class="list-group"></ul>
               </div>
@@ -161,11 +156,12 @@
   </div>
 
   <!-- Scripts and shit -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.0.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
   <script src="./js/leaflet-providers.js"></script>
+  <script src="./js/jquery-ui.min.js"></script>
   <script src="./js/geolib.js"></script>
   <script src="./js/main.js"></script>
 </body>
