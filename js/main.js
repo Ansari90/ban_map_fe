@@ -2,6 +2,14 @@ const STATE_LIST = document.getElementById('stateList');
 const CITY_LIST = document.getElementById('cityList');
 const CITY_CARD = document.getElementById('cityCard');
 const RADIUS_SLIDER = document.getElementById('radius');
+const BAN_COLORS = {
+  'Implementation': '#ECD420',
+  'Temporary COVID-19 Repeal': '#FF00FF',
+  'Proposal': '#FF6D05',
+  'Formal Enactment': '#FF0101',
+  'Pending': '#A200AB',
+  'Repealed': '#5E4819'
+}
 
 const MARKERS = {
   city: {
@@ -9,9 +17,19 @@ const MARKERS = {
     circle: undefined,
   },
   customers: [],
-  bans: [],
+  bans: DATA.meta.bans.map(ban => {
+    if (ban.lat === undefined) return undefined;
+    let banMarker =  L.circle([ban.lat, ban.lng], {
+      color: BAN_COLORS[ban.Stage],
+      fillColor: BAN_COLORS[ban.Stage],
+      fillOpacity: 0.2,
+      radius: 2000
+    });
+    banMarker.on('click', () => info.update(`<h4 class="card-title">${ban.City}</h4>` + createBanString(ban)));
+    return banMarker
+  }),
   composters: DATA.meta.composters.map(composter => {
-    let marker = L.marker([composter.Lat, composter.Longitude],
+    let composterMarker = L.marker([composter.Lat, composter.Longitude],
       {
         icon: L.icon({
           iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
@@ -25,17 +43,16 @@ const MARKERS = {
         })
       }
     );
-    marker.on('click', () => {
+    composterMarker.on('click', () => {
       info.update(`
         <h4>${composter.Name}</h4>
         <h5>${composter.City}, ${composter.State_Province}</h5>
         <a href="${composter.URL}" target="_blank">Visit</a>
       `);
     });
-    return marker;
+    return composterMarker;
   })
 }
-
 
 function gotoBlogPost(url) { window.open(url, ''); }
 
@@ -45,8 +62,17 @@ RADIUS_SLIDER.addEventListener('change', radiusChange);
 const MAP = L.map('map_id').setView([38, -95], 4);
 L.tileLayer.provider('CartoDB.Positron').addTo(MAP);
 
-var info = L.control();
+const legend = L.control({position: 'bottomright'});
+legend.onAdd = () => {
+  let div = L.DomUtil.create('div', 'info legend');
+  Object.keys(BAN_COLORS).forEach(key => {
+    div.innerHTML += `<i style="background: ${BAN_COLORS[key]};"></i>${key}<br>`;
+  });
+  return div;
+};
+legend.addTo(MAP);
 
+const info = L.control();
 info.update = function (content) { this._div.innerHTML = (content ? content : '<h5>' + 'Click on something!' + '</h5>'); };
 info.onAdd = function () {
   this._div = L.DomUtil.create('div', 'info');
@@ -137,8 +163,8 @@ function showDataFor(state_key, city_index) {
   createPOICircles(state_key, city);
 
   let cardString = `<h4 class="card-title">${city.city}</h4>`;
-
-  if(city.ban.length > 0) { cardString += createBanString(city.ban[0]) }
+  let cityBan = DATA.meta.bans.find(ban => (ban.lat === city.lat && city.lng === ban.lng))
+  if(cityBan !== undefined) { cardString += createBanString(cityBan) }
 
   cardString += `<p class="card-text">Population: ${city.population}</p>`;
   CITY_CARD.innerHTML = cardString;
@@ -146,10 +172,8 @@ function showDataFor(state_key, city_index) {
 
 function createBanString(ban) {
   let banString = `
-        <h6 class="card-subtitle text-muted mb-1 mt-2">Stage:</h6>
-        <h5 class="card-subtitle mb-2">${ban.Stage}</h5>
-        <h6 class="card-subtitle text-muted mt-2 mb-1">Type:</h6>
-        <h5 class="card-subtitle mb-2">${ban.Type}</h5>
+      <h6 class="card-subtitle mb-1 mt-2">Stage: ${ban.Stage}</h6>
+      <h6 class="card-subtitle text-muted mt-2 mb-1">Type: ${ban.Type}</h6>
     `;
 
   let proposedDate = ban['If applicable, date proposed'];
@@ -162,7 +186,7 @@ function createBanString(ban) {
       dateStringToUse = `Date Proposed: ${proposedDate}`;
     }
   }
-  banString += `<h6 class="card-subtitle mb-2 mt-2 text-muted">${dateStringToUse}</h6>`;
+  banString += `<span class="card-subtitle text-muted">${dateStringToUse}</span>`;
   return banString;
 }
 
@@ -190,33 +214,49 @@ function createComposterMarkers(city) {
   });
 }
 
+function showAllComposters() {
+  MARKERS.composters.forEach(composter => composter.addTo(MAP));
+}
+
+function showAllBans() {
+  MARKERS.bans.forEach(ban => {
+    if (ban === undefined) return;
+    ban.addTo(MAP);
+  });
+}
+
+function clearAll() {
+  MARKERS.composters.forEach(composter => composter.remove());
+  MARKERS.bans.forEach(ban => {
+    if (ban === undefined) return;
+    ban.remove();
+  });
+  if (MARKERS.city.circle !== undefined) {
+    MARKERS.city.circle.remove();
+    MARKERS.city.marker.remove();
+  }
+  MAP.setView([38, -95], 4);
+}
+
 function createPOICircles(state_key, city) {
   let maxDistance = Math.floor(RADIUS_SLIDER.value * 1.6);
 
-  MARKERS.bans.forEach(ban => ban.remove());
-  MARKERS.customers.forEach(customer => customer.remove());
-  MARKERS.bans = [];
-  MARKERS.customers = [];
-  DATA[state_key].cities.forEach(otherCity => {
-    if (otherCity.ban.length > 0) {
-      let distanceInMeters = window.geolib.getPreciseDistance(
-        { latitude: city.lat, longitude: city.lng },
-        { latitude: otherCity.lat, longitude: otherCity.lng }
-      );
+  DATA.meta.bans.forEach((ban, index) => {
+    if (ban.lat === undefined || MARKERS.bans[index] === undefined) return;
 
-      if (Math.floor(distanceInMeters/1000) <= maxDistance) {
-        let banMarker =  L.circle([otherCity.lat, otherCity.lng], {
-          color: '#ff0000',
-          fillColor: '#ff0000',
-          fillOpacity: 0.2,
-          radius: 2000
-        });
-        banMarker.on('click', () => info.update(`<h4 class="card-title">${city.city}</h4>` + createBanString(otherCity.ban[0])));
-        banMarker.addTo(MAP);
-        MARKERS.bans.push(banMarker);
-      }
+    let distanceInMeters = window.geolib.getPreciseDistance(
+      { latitude: city.lat, longitude: city.lng },
+      { latitude: ban.lat, longitude: ban.lng }
+    );
+    if (Math.floor(distanceInMeters/1000) <= maxDistance) {
+      MARKERS.bans[index].addTo(MAP);
+    } else {
+      MARKERS.bans[index].remove();
     }
-
+  });
+}
+  // MARKERS.customers.forEach(customer => customer.remove());
+  // DATA[state_key].cities.forEach(otherCity => {
     // if (otherCity.customer !== undefined) {
     //   let customerMarker =  L.circle([otherCity.lat, otherCity.lng], {
     //     color: '#8ac9ed',
@@ -234,5 +274,4 @@ function createPOICircles(state_key, city) {
     //   customerMarker.addTo(MAP);
     //   MARKERS.customers.push(customerMarker);
     // }
-  })
-}
+  // })
