@@ -141,7 +141,7 @@ function showCitiesFor(state_key) {
     searchList.push(city.city)
     CITY_LIST.innerHTML += `
       <li
-          id="${city.city.replace(' ', '_')}"
+          id="${city.city}"
           class="list-group-item list-item-hover d-flex justify-content-between align-items-center"
           onclick="showDataFor('${state_key}', '${index}')"
       >
@@ -154,9 +154,8 @@ function showCitiesFor(state_key) {
     source: searchList
   });
   $('#cityInput').on( "autocompleteselect", function( event, ui ) {
-    let city_id = ui.item.value.replace(' ', '_')
-    $(`#${city_id}`).click();
-    document.getElementById(city_id).scrollIntoView(true);
+    $(`#${ui.item.value}`).click();
+    document.getElementById(ui.item.value).scrollIntoView(true);
   } );
   showDataFor(state_key, 0);
 }
