@@ -61,23 +61,23 @@ const MARKERS = {
     });
     return lobsterMarker;
   }),
-  customers: DATA.meta.customers.map(customer =>{
-    const customerMarker = L.marker([customer.lat, customer.lng], {
-      icon: L.icon({
-        iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
-
-        iconSize:     [30, 30], // size of the icon
-        iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
-      })
-    });
-    customerMarker.on('click', () => {
-      info.update(`
-        <h5 class="card-subtitle mb-2 mt-2">${customer.Customer}</h5>
-        <h5 class="card-subtitle text-muted mt-2 mb-1 capitalize-this">${customer.City}, ${customer.State}</h5>
-      `);
-    });
-    return customerMarker;
-  }),
+  // customers: DATA.meta.customers.map(customer =>{
+  //   const customerMarker = L.marker([customer.lat, customer.lng], {
+  //     icon: L.icon({
+  //       iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
+  //
+  //       iconSize:     [30, 30], // size of the icon
+  //       iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+  //     })
+  //   });
+  //   customerMarker.on('click', () => {
+  //     info.update(`
+  //       <h5 class="card-subtitle mb-2 mt-2">${customer.Customer}</h5>
+  //       <h5 class="card-subtitle text-muted mt-2 mb-1 capitalize-this">${customer.City}, ${customer.State}</h5>
+  //     `);
+  //   });
+  //   return customerMarker;
+  // }),
   bans: DATA.meta.bans.map(ban => {
     let banMarker =  L.circle([ban.lat, ban.lng], {
       color: BAN_COLORS[ban.Stage],
@@ -269,11 +269,11 @@ function showAllLobsters() {
 }
 
 function showAllCustomers() {
-  MARKERS.customers.forEach(customer => customer.addTo(MAP));
+  // MARKERS.customers.forEach(customer => customer.addTo(MAP));
 }
 
 function clearAll() {
-  MARKERS.customers.forEach(customer => customer.remove());
+  // MARKERS.customers.forEach(customer => customer.remove());
   MARKERS.composters.forEach(composter => composter.remove());
   MARKERS.lobsters.forEach(lobster => lobster.remove());
   MARKERS.bans.forEach(ban => ban.remove());
@@ -312,15 +312,15 @@ function createPOICircles(state_key, city) {
     }
   });
 
-  DATA.meta.customers.forEach((customer, index) => {
-    let distanceInMeters = window.geolib.getPreciseDistance(
-      { latitude: city.lat, longitude: city.lng },
-      { latitude: customer.lat, longitude: customer.lng }
-    );
-    if (Math.floor(distanceInMeters/1000) <= maxDistance) {
-      MARKERS.customers[index].addTo(MAP);
-    } else {
-      MARKERS.customers[index].remove();
-    }
-  });
+  // DATA.meta.customers.forEach((customer, index) => {
+  //   let distanceInMeters = window.geolib.getPreciseDistance(
+  //     { latitude: city.lat, longitude: city.lng },
+  //     { latitude: customer.lat, longitude: customer.lng }
+  //   );
+  //   if (Math.floor(distanceInMeters/1000) <= maxDistance) {
+  //     MARKERS.customers[index].addTo(MAP);
+  //   } else {
+  //     MARKERS.customers[index].remove();
+  //   }
+  // });
 }
