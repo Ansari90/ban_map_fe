@@ -18,7 +18,6 @@ const MARKERS = {
   },
   customers: [],
   bans: DATA.meta.bans.map(ban => {
-    if (ban.lat === undefined) return undefined;
     let banMarker =  L.circle([ban.lat, ban.lng], {
       color: BAN_COLORS[ban.Stage],
       fillColor: BAN_COLORS[ban.Stage],
@@ -252,7 +251,7 @@ function createPOICircles(state_key, city) {
   let maxDistance = Math.floor(RADIUS_SLIDER.value * 1.6);
 
   DATA.meta.bans.forEach((ban, index) => {
-    if (ban.lat === undefined || MARKERS.bans[index] === undefined) return;
+    if (MARKERS.bans[index] === undefined) return;
 
     let distanceInMeters = window.geolib.getPreciseDistance(
       { latitude: city.lat, longitude: city.lng },

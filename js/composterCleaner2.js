@@ -1,23 +1,17 @@
-'use strict';
-
 const fs = require('fs');
 
-let bans = JSON.parse(fs.readFileSync('./json/bans.json'));
+let customers = JSON.parse(fs.readFileSync('./json/customers.json'));
 let cities = JSON.parse(fs.readFileSync('./json/cities.json'));
 
-cities.forEach(city => {
-  bans.forEach(ban => {
-    if ((city.state_id === ban.State)
-      && (ban.City.toLowerCase().includes(city.city.toLowerCase()) || city.city.toLowerCase().includes(ban.City.toLowerCase()))) {
-      ban.City = city.city;
-      ban.lat = city.lat;
-      ban.lng = city.lng;
-    }
-  });
+customers.forEach(customer => {
+  let custCity = cities.find(city => city.zips.includes(customer['Zip Code']));
+  if (custCity !== undefined) {
+    customer.lat = custCity.lat;
+    customer.lng = custCity.lng;
+  }
 });
 
-const no_lat_bans = bans.filter(ban => ban.lat === undefined)
-let carmel = no_lat_bans.find(ban => ban.City === 'CARMEL BY THE SEA');
-
+const no_lat_customers = customers.filter(customer => customer.lat === undefined)
+console.log(no_lat_customers.length);
 
 
