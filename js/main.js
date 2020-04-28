@@ -1,3 +1,6 @@
+const MAP = L.map('map_id').setView([38, -95], 4);
+L.tileLayer.provider('CartoDB.Positron').addTo(MAP);
+
 const STATE_LIST = document.getElementById('stateList');
 const CITY_LIST = document.getElementById('cityList');
 const CITY_CARD = document.getElementById('cityCard');
@@ -16,6 +19,43 @@ const MARKERS = {
     marker: undefined,
     circle: undefined,
   },
+  facilities: [
+    { lat: '41.8373', lng: '-87.6862', data: DATA.meta.facilities[0] },
+    { lat: '33.8117', lng: '-84.2405', data: DATA.meta.facilities[1] }
+  ].map(facility => {
+    const facilityMarker = L.marker([facility.lat, facility.lng], {
+      icon: L.icon({
+        iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
+
+        iconSize:     [30, 30], // size of the icon
+        iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+      })
+    });
+    facilityMarker.on('click', () => {
+      const facilitiy = facility.data;
+      info.update(`
+        <h4>${facilitiy.Facility}</h4>
+        <h5>${facilitiy.Capability}</h5>
+        <h6>${facilitiy.City}, ${DATA[facilitiy.State].name}</h6>
+        <h6>${facilitiy.Address}</h6>
+      `);
+    });
+    facilityMarker.addTo(MAP);
+  }),
+  lobsters: DATA.meta.lobsters.map(lobster => {
+    const lobsterMarker = L.marker([lobster.lat, lobster.lng], {
+      icon: L.icon({
+        iconUrl: '../img/red_lobster.png',
+
+        iconSize:     [30, 30], // size of the icon
+        iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+      })
+    });
+    lobsterMarker.on('click', () => {
+      console.log(lobster);
+      // info.update(``);
+    });
+  }),
   customers: [],
   bans: DATA.meta.bans.map(ban => {
     let banMarker =  L.circle([ban.lat, ban.lng], {
@@ -58,9 +98,6 @@ function gotoBlogPost(url) { window.open(url, ''); }
 function radiusChange(evt) { document.getElementById('composter_radius').innerText = `${evt.target.value} miles`; }
 RADIUS_SLIDER.addEventListener('change', radiusChange);
 
-const MAP = L.map('map_id').setView([38, -95], 4);
-L.tileLayer.provider('CartoDB.Positron').addTo(MAP);
-
 const legend = L.control({position: 'bottomright'});
 legend.onAdd = () => {
   let div = L.DomUtil.create('div', 'info legend');
@@ -79,43 +116,6 @@ info.onAdd = function () {
   return this._div;
 };
 info.addTo(MAP);
-
-const be_marker_chicago = L.marker([41.8373, -87.6862], {
-  icon: L.icon({
-    iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
-
-    iconSize:     [30, 30], // size of the icon
-    iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
-  })
-});
-be_marker_chicago.on('click', () => {
-  const facilitiy = DATA.meta.facilities[0];
-  info.update(`
-    <h4>${facilitiy.Facility}</h4>
-    <h5>${facilitiy.Capability}</h5>
-    <h6>${facilitiy.City}, ${DATA[facilitiy.State].name}</h6>
-    <h6>${facilitiy.Address}</h6>
-  `);
-});
-be_marker_chicago.addTo(MAP);
-const be_marker_atlanta = L.marker([33.8117, -84.2405], {
-  icon: L.icon({
-    iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
-
-    iconSize:     [30, 30], // size of the icon
-    iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
-  })
-}).addTo(MAP);
-be_marker_atlanta.on('click', () => {
-  const facilitiy = DATA.meta.facilities[1];
-  info.update(`
-    <h4>${facilitiy.Facility}</h4>
-    <h5>${facilitiy.Capability}</h5>
-    <h6>${facilitiy.City}, ${DATA[facilitiy.State].name}</h6>
-    <h6>${facilitiy.Address}</h6>
-  `);
-});
-be_marker_atlanta.addTo(MAP);
 
 CITY_CARD.innerHTML = '<h5 class="card-subtitle mb-2">Select a State!</h5>';
 Object.keys(DATA).forEach(key => {
@@ -228,10 +228,11 @@ function showAllComposters() {
 }
 
 function showAllBans() {
-  MARKERS.bans.forEach(ban => {
-    if (ban === undefined) return;
-    ban.addTo(MAP);
-  });
+  MARKERS.bans.forEach(ban => ban.addTo(MAP));
+}
+
+function showAllLobsters() {
+  MARKERS.lobsters.forEach(lobster => lobster.addTo(MAP));
 }
 
 function clearAll() {
@@ -251,8 +252,6 @@ function createPOICircles(state_key, city) {
   let maxDistance = Math.floor(RADIUS_SLIDER.value * 1.6);
 
   DATA.meta.bans.forEach((ban, index) => {
-    if (MARKERS.bans[index] === undefined) return;
-
     let distanceInMeters = window.geolib.getPreciseDistance(
       { latitude: city.lat, longitude: city.lng },
       { latitude: ban.lat, longitude: ban.lng }
@@ -263,24 +262,16 @@ function createPOICircles(state_key, city) {
       MARKERS.bans[index].remove();
     }
   });
+
+  DATA.meta.lobsters.forEach((lobster, index) => {
+    let distanceInMeters = window.geolib.getPreciseDistance(
+      { latitude: city.lat, longitude: city.lng },
+      { latitude: lobster.lat, longitude: lobster.lng }
+    );
+    if (Math.floor(distanceInMeters/1000) <= maxDistance) {
+      MARKERS.lobsters[index].addTo(MAP);
+    } else {
+      MARKERS.lobsters[index].remove();
+    }
+  });
 }
-  // MARKERS.customers.forEach(customer => customer.remove());
-  // DATA[state_key].cities.forEach(otherCity => {
-    // if (otherCity.customer !== undefined) {
-    //   let customerMarker =  L.circle([otherCity.lat, otherCity.lng], {
-    //     color: '#8ac9ed',
-    //     fillColor: '#8ac9ed',
-    //     fillOpacity: 0.5,
-    //     radius: 1000
-    //   });
-    //   customerMarker.on('click', () => {
-    //     info.update(`
-    //       <h5>${otherCity.customer.Customer}</h5>
-    //       <h6>${otherCity.customer.City}, ${otherCity.customer.State}</h6>
-    //     `);
-    //   });
-    //   console.log('hey!');
-    //   customerMarker.addTo(MAP);
-    //   MARKERS.customers.push(customerMarker);
-    // }
-  // })
