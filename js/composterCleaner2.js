@@ -1,10 +1,13 @@
 const fs = require('fs');
 
-let customers = JSON.parse(fs.readFileSync('./json/customers.json'));
+let lobsters = JSON.parse(fs.readFileSync('./json/customers.json'));
 let cities = JSON.parse(fs.readFileSync('./json/cities.json'));
 
-customers.forEach(customer => {
-  let custCity = cities.find(city => city.zips.includes(customer['Zip Code']));
+cities.forEach(city => {
+  city.zips = city.zips.split(" ");
+});
+lobsters.forEach(customer => {
+  let custCity = cities.find(city => city.zips.find(zip => (zip === customer['Zip Code'])) !== undefined);
   if (custCity !== undefined) {
     customer.lat = custCity.lat;
     customer.lng = custCity.lng;

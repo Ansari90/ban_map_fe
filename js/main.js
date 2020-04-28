@@ -25,10 +25,10 @@ const MARKERS = {
   ].map(facility => {
     const facilityMarker = L.marker([facility.lat, facility.lng], {
       icon: L.icon({
-        iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
+        iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Logo_2.png',
 
-        iconSize:     [30, 30], // size of the icon
-        iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+        iconSize:     [60, 20], // size of the icon
+        iconAnchor:   [20, 20], // point of the icon which will correspond to marker's location
       })
     });
     facilityMarker.on('click', () => {
@@ -41,22 +41,43 @@ const MARKERS = {
       `);
     });
     facilityMarker.addTo(MAP);
+    return facilityMarker;
   }),
   lobsters: DATA.meta.lobsters.map(lobster => {
     const lobsterMarker = L.marker([lobster.lat, lobster.lng], {
       icon: L.icon({
-        iconUrl: '../img/red_lobster.png',
+        iconUrl: 'img/red_lobster.png',
 
         iconSize:     [30, 30], // size of the icon
         iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
       })
     });
     lobsterMarker.on('click', () => {
-      console.log(lobster);
-      // info.update(``);
+      info.update(`
+        <img src="img/red_lobster.png" class="lobster-size"/>
+        <h5 class="card-subtitle mb-1 mt-2 capitalize-this">${lobster['Street Address'].toLowerCase()}</h5>
+        <h5 class="card-subtitle text-muted mt-2 mb-1 capitalize-this">${lobster.City.toLowerCase()}, ${lobster.ST}</h5>
+      `);
     });
+    return lobsterMarker;
   }),
-  customers: [],
+  customers: DATA.meta.customers.map(customer =>{
+    const customerMarker = L.marker([customer.lat, customer.lng], {
+      icon: L.icon({
+        iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
+
+        iconSize:     [30, 30], // size of the icon
+        iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+      })
+    });
+    customerMarker.on('click', () => {
+      info.update(`
+        <h5 class="card-subtitle mb-2 mt-2">${customer.Customer}</h5>
+        <h5 class="card-subtitle text-muted mt-2 mb-1 capitalize-this">${customer.City}, ${customer.State}</h5>
+      `);
+    });
+    return customerMarker;
+  }),
   bans: DATA.meta.bans.map(ban => {
     let banMarker =  L.circle([ban.lat, ban.lng], {
       color: BAN_COLORS[ban.Stage],
@@ -65,7 +86,7 @@ const MARKERS = {
       radius: 2000
     });
     banMarker.on('click', () => info.update(`<h4 class="card-title">${ban.City}</h4>` + createBanString(ban)));
-    return banMarker
+    return banMarker;
   }),
   composters: DATA.meta.composters.map(composter => {
     let composterMarker = L.marker([composter.Lat, composter.Longitude],
@@ -97,6 +118,18 @@ function gotoBlogPost(url) { window.open(url, ''); }
 
 function radiusChange(evt) { document.getElementById('composter_radius').innerText = `${evt.target.value} miles`; }
 RADIUS_SLIDER.addEventListener('change', radiusChange);
+
+const clearMap = L.control({position: 'bottomleft'});
+clearMap.onAdd = () => {
+  let div = L.DomUtil.create('div');
+  div.innerHTML = `
+    <div class="input-group">
+        <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="clearAll()" type="button" id="button-addon6">Clear Map</button>
+    </div>
+  `;
+  return div;
+};
+clearMap.addTo(MAP);
 
 const legend = L.control({position: 'bottomright'});
 legend.onAdd = () => {
@@ -235,12 +268,15 @@ function showAllLobsters() {
   MARKERS.lobsters.forEach(lobster => lobster.addTo(MAP));
 }
 
+function showAllCustomers() {
+  MARKERS.customers.forEach(customer => customer.addTo(MAP));
+}
+
 function clearAll() {
+  MARKERS.customers.forEach(customer => customer.remove());
   MARKERS.composters.forEach(composter => composter.remove());
-  MARKERS.bans.forEach(ban => {
-    if (ban === undefined) return;
-    ban.remove();
-  });
+  MARKERS.lobsters.forEach(lobster => lobster.remove());
+  MARKERS.bans.forEach(ban => ban.remove());
   if (MARKERS.city.circle !== undefined) {
     MARKERS.city.circle.remove();
     MARKERS.city.marker.remove();
@@ -272,6 +308,18 @@ function createPOICircles(state_key, city) {
       MARKERS.lobsters[index].addTo(MAP);
     } else {
       MARKERS.lobsters[index].remove();
+    }
+  });
+
+  DATA.meta.customers.forEach((customer, index) => {
+    let distanceInMeters = window.geolib.getPreciseDistance(
+      { latitude: city.lat, longitude: city.lng },
+      { latitude: customer.lat, longitude: customer.lng }
+    );
+    if (Math.floor(distanceInMeters/1000) <= maxDistance) {
+      MARKERS.customers[index].addTo(MAP);
+    } else {
+      MARKERS.customers[index].remove();
     }
   });
 }

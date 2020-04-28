@@ -38,10 +38,24 @@ Object.keys(FINAL_OBJECT).forEach(stateKey => {
   FINAL_OBJECT[stateKey].cities = cities.filter(city => city.state_id === stateKey);
 });
 
+let lobsters = JSON.parse(fs.readFileSync('./json/lobsters.json'));
+lobsters.forEach(lobster => {
+  if (lobster['Street Address'].toLowerCase().includes('320 universal drive north')) {
+    lobster.lat = '41.354135';
+    lobster.lng = '-72.872695';
+    return;
+  }
+  if (lobster['Street Address'].toLowerCase().includes('303 route 10 - roxbury township')) {
+    lobster.lat = '40.873482';
+    lobster.lng = '-74.649276';
+    return;
+  }
+})
+
 FINAL_OBJECT.meta = {
   bans: bans.filter(ban => ban.lat !== undefined),
-  customer: JSON.parse(fs.readFileSync('./json/customers.json')),
-  lobsters: JSON.parse(fs.readFileSync('./json/lobsters.json')),
+  customers: JSON.parse(fs.readFileSync('./json/customers.json')),
+  lobsters: lobsters,
   composters: JSON.parse(fs.readFileSync('./json/composters.json')),
   facilities: JSON.parse(fs.readFileSync('./json/facilities.json'))
 };
