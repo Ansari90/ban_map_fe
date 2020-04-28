@@ -282,6 +282,7 @@ function clearAll() {
     MARKERS.city.marker.remove();
   }
   MAP.setView([38, -95], 4);
+  info.update();
 }
 
 function createPOICircles(state_key, city) {
