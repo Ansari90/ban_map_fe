@@ -72,8 +72,8 @@ const MARKERS = {
     });
     customerMarker.on('click', () => {
       info.update(`
-        <h5 class="card-subtitle mb-2 mt-2">${customer.Customer}</h5>
-        <h5 class="card-subtitle text-muted mt-2 mb-1 capitalize-this">${customer.City}, ${customer.State}</h5>
+        <h5>BetterEarth Partner</h5>
+        <h4 class="capitalize-this">${customer.City}, ${customer.State}</h4>
       `);
     });
     return customerMarker;
