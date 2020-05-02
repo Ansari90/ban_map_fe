@@ -54,7 +54,7 @@ lobsters.forEach(lobster => {
 
 FINAL_OBJECT.meta = {
   bans: bans.filter(ban => ban.lat !== undefined),
-  customers: JSON.parse(fs.readFileSync('./json/customers.json')),
+  // customers: JSON.parse(fs.readFileSync('./json/customers.json')),
   lobsters: lobsters,
   composters: JSON.parse(fs.readFileSync('./json/composters.json')),
   facilities: JSON.parse(fs.readFileSync('./json/facilities.json'))
