@@ -3,7 +3,7 @@
 const fs = require('fs');
 
 let cities = JSON.parse(fs.readFileSync('./json/cities.json'));
-cities = cities.map(city => {
+let citiesWithReducedData = cities.map(city => {
   return {
     city: city.city,
     lat: city.lat,
@@ -13,49 +13,47 @@ cities = cities.map(city => {
   };
 });
 
-let bans = JSON.parse(fs.readFileSync('./json/bans.json'));
-bans.forEach(ban => {
-  let banCityName = ban.City.toLowerCase();
-
-  cities.find(city => {
-    let cityName = city.city.toLowerCase();
-
-    if ((city.state_id.includes(ban.State) || ban.State.includes(city.state_id))
-      && (banCityName.includes(cityName) || cityName.includes(banCityName))) {
-      ban.lat = city.lat;
-      ban.lng = city.lng
-
-      return true;
-    }
-  });
+let states = JSON.parse(fs.readFileSync('./json/states.json'));
+const FINAL_OBJECT = { states : [] };
+states.forEach(state => {
+  FINAL_OBJECT.states.push(state.short);
+  FINAL_OBJECT[state.short] = { name: state.name };
+  FINAL_OBJECT[state.short].cities = citiesWithReducedData.filter(city => city.state_id === state.short);
 });
 
-let states = JSON.parse(fs.readFileSync('./json/states.json'));
-const FINAL_OBJECT = {};
-states.forEach(state => FINAL_OBJECT[state.short] = { name: state.name });
+/*
+bans 544
+include state && city - 379
+include cityName - 516
+include state and equal cityName - 307
+equal cityName = 418
+ban cityName only includes = 502
+ */
+let bans = JSON.parse(fs.readFileSync('./json/bans.json'));
+let bansWithCoords = [];
+bans.forEach(ban => {
+  let banCity = cities.find(city => city.state_id === ban.State && ban.City.toLowerCase() === city.city.toLowerCase());
 
-Object.keys(FINAL_OBJECT).forEach(stateKey => {
-  FINAL_OBJECT[stateKey].cities = cities.filter(city => city.state_id === stateKey);
+  if (banCity !== undefined) {
+    ban.lat = banCity.lat;
+    ban.lng = banCity.lng
+    bansWithCoords.push(ban);
+  }
 });
 
 let lobsters = JSON.parse(fs.readFileSync('./json/lobsters.json'));
-lobsters.forEach(lobster => {
-  if (lobster['Street Address'].toLowerCase().includes('320 universal drive north')) {
-    lobster.lat = '41.354135';
-    lobster.lng = '-72.872695';
-    return;
-  }
-  if (lobster['Street Address'].toLowerCase().includes('303 route 10 - roxbury township')) {
-    lobster.lat = '40.873482';
-    lobster.lng = '-74.649276';
-    return;
-  }
-})
+let lobsterToClean_1 = lobsters.find(lobster => lobster['Street Address'].toLowerCase().includes('320 universal drive north'));
+lobsterToClean_1.lat = '41.354135';
+lobsterToClean_1.lng = '-72.872695';
+
+let lobsterToClean_2 = lobsters.find(lobster => lobster['Street Address'].toLowerCase().includes('303 route 10 - roxbury township'));
+lobsterToClean_2.lat = '40.873482';
+lobsterToClean_2.lng = '-74.649276';
 
 FINAL_OBJECT.meta = {
-  bans: bans.filter(ban => ban.lat !== undefined),
-  // customers: JSON.parse(fs.readFileSync('./json/customers.json')),
   lobsters: lobsters,
+  bans: bansWithCoords,
+  customers: JSON.parse(fs.readFileSync('./json/customers.json')),
   composters: JSON.parse(fs.readFileSync('./json/composters.json')),
   facilities: JSON.parse(fs.readFileSync('./json/facilities.json'))
 };

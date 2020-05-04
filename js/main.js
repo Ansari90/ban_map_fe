@@ -1,9 +1,6 @@
 const MAP = L.map('map_id').setView([38, -95], 4);
 L.tileLayer.provider('CartoDB.Positron').addTo(MAP);
 
-const STATE_LIST = document.getElementById('stateList');
-const CITY_LIST = document.getElementById('cityList');
-const CITY_CARD = document.getElementById('cityCard');
 const RADIUS_SLIDER = document.getElementById('radius');
 const BAN_COLORS = {
   'Implementation': '#ECD420',
@@ -25,10 +22,10 @@ const MARKERS = {
   ].map(facility => {
     const facilityMarker = L.marker([facility.lat, facility.lng], {
       icon: L.icon({
-        iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Logo_2.png',
+        iconUrl: 'img/be_bamboo.png',
 
-        iconSize:     [60, 20], // size of the icon
-        iconAnchor:   [20, 20], // point of the icon which will correspond to marker's location
+        iconSize:     [40, 30], // size of the icon
+        iconAnchor:   [30, 20], // point of the icon which will correspond to marker's location
       })
     });
     facilityMarker.on('click', () => {
@@ -48,7 +45,7 @@ const MARKERS = {
       icon: L.icon({
         iconUrl: 'img/red_lobster.png',
 
-        iconSize:     [30, 30], // size of the icon
+        iconSize:     [60, 30], // size of the icon
         iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
       })
     });
@@ -64,7 +61,7 @@ const MARKERS = {
   customers: DATA.meta.customers.map(customer =>{
     const customerMarker = L.marker([customer.lat, customer.lng], {
       icon: L.icon({
-        iconUrl: 'https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2019/05/BetterEarth_Brandmark.png?time=1587748296',
+        iconUrl: 'img/be_customer_mark.png',
 
         iconSize:     [30, 30], // size of the icon
         iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
@@ -92,8 +89,8 @@ const MARKERS = {
     let composterMarker = L.marker([composter.Lat, composter.Longitude],
       {
         icon: L.icon({
-          iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-          shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+          iconUrl: 'img/leaf-green.png',
+          shadowUrl: 'img/leaf-shadow.png',
 
           iconSize:     [38, 95], // size of the icon
           shadowSize:   [50, 64], // size of the shadow
@@ -116,100 +113,98 @@ const MARKERS = {
 
 function gotoBlogPost(url) { window.open(url, ''); }
 
-function radiusChange(evt) { document.getElementById('composter_radius').innerText = `${evt.target.value} miles`; }
-RADIUS_SLIDER.addEventListener('change', radiusChange);
+RADIUS_SLIDER.addEventListener('change', evt => {
+  document.getElementById('composter_radius').innerText = `Searching within ${evt.target.value} miles`;
+  showDataFor();
+});
 
-const clearMap = L.control({position: 'bottomleft'});
-clearMap.onAdd = () => {
-  let div = L.DomUtil.create('div');
-  div.innerHTML = `
-    <div class="input-group">
-        <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="clearAll()" type="button" id="button-addon6">Clear Map</button>
-    </div>
-  `;
-  return div;
-};
-clearMap.addTo(MAP);
-
-const legend = L.control({position: 'bottomright'});
+const legend = L.control({position: 'topleft'});
 legend.onAdd = () => {
   let div = L.DomUtil.create('div', 'info legend');
-  Object.keys(BAN_COLORS).forEach(key => {
-    div.innerHTML += `<i style="background: ${BAN_COLORS[key]};"></i>${key}<br>`;
-  });
+  div.innerHTML = document.getElementById('treeHuggerContent').innerHTML;
   return div;
 };
 legend.addTo(MAP);
 
+let LEGEND_IS_VISIBLE = true;
+const showHideLegend = () => {
+  if (LEGEND_IS_VISIBLE) {
+    document.getElementsByClassName('info')[0].classList.add('no-display');
+    document.getElementById('toggleIndexBtn').classList.remove('no-display');
+    LEGEND_IS_VISIBLE = false;
+  } else {
+    document.getElementsByClassName('info')[0].classList.remove('no-display');
+    document.getElementById('toggleIndexBtn').classList.add('no-display');
+    LEGEND_IS_VISIBLE = true;
+  }
+}
+const toggleLegend = L.control({position: 'topleft'});
+toggleLegend.onAdd = function () {
+  let div = L.DomUtil.create('div', 'toggle-index');
+  div.innerHTML = '<button id="toggleIndexBtn" class="btn btn-outline-secondary be-btn-green-then-blue no-display" onclick="showHideLegend()" type="button">Show Index</button>';
+  return div;
+};
+toggleLegend.addTo(MAP);
+
 const info = L.control();
 info.update = function (content) { this._div.innerHTML = (content ? content : '<h5>' + 'Click on something!' + '</h5>'); };
 info.onAdd = function () {
-  this._div = L.DomUtil.create('div', 'info');
+  this._div = L.DomUtil.create('div', 'info smaller-info');
   this.update();
   return this._div;
 };
 info.addTo(MAP);
 
-CITY_CARD.innerHTML = '<h5 class="card-subtitle mb-2">Select a State!</h5>';
-Object.keys(DATA).forEach(key => {
-  if (key === 'meta') return;
+const createAutocompleteList = () => {
+  const cityList = [];
 
-  STATE_LIST.innerHTML += `
-    <li
-        id="state_${key}"
-        class="list-group-item list-item-hover d-flex justify-content-between align-items-center"
-        onclick="showCitiesFor('${key}')"
-    >
-      <span>${DATA[key].name}</span>
-    </li>
-  `
+  DATA.states.forEach(state_key => {
+    DATA[state_key].cities.forEach(city => {
+
+      let label_string = `${city.city}, ${DATA[state_key].name}`;
+      cityList.push({
+        label: label_string,
+        value: label_string,
+        city: city
+      });
+    });
+  });
+
+  return cityList;
+};
+
+const CITY_STATE_AUTOCOMPLETE = $('#cityInput')
+CITY_STATE_AUTOCOMPLETE.autocomplete({
+  minLength: 4,
+  select: (event, ui) => showDataFor(ui.item.city),
+  source: createAutocompleteList()
 });
 
-function showCitiesFor(state_key) {
-  CITY_LIST.innerHTML = '';
-  let searchList = [];
+let CITY_TO_USE = undefined;
+function showDataFor(city) {
+  if (city !== undefined) {
+    CITY_TO_USE = city;
+  } else {
+    city = CITY_TO_USE;
+  }
+  if (city === undefined) { return; }
 
-  DATA[state_key].cities.forEach((city, index) => {
-    searchList.push(city.city)
-    CITY_LIST.innerHTML += `
-      <li
-          id="${city.city}"
-          class="list-group-item list-item-hover d-flex justify-content-between align-items-center"
-          onclick="showDataFor('${state_key}', '${index}')"
-      >
-        <span>${city.city}</span>
-      </li>
-    `
-  });
-
-  $('#cityInput').autocomplete({
-    source: searchList
-  });
-  $('#cityInput').on( "autocompleteselect", function( event, ui ) {
-    $(`#${ui.item.value}`).click();
-    document.getElementById(ui.item.value).scrollIntoView(true);
-  } );
-  showDataFor(state_key, 0);
-}
-
-function showDataFor(state_key, city_index) {
-  const city = DATA[state_key].cities[city_index];
   MAP.setView([city.lat, city.lng], 8);
 
-  if(MARKERS.city.marker !== undefined) {
+  if (MARKERS.city.marker !== undefined) {
     MARKERS.city.marker.remove();
     MARKERS.city.circle.remove();
   }
   MARKERS.city.marker = L.marker([city.lat, city.lng]).addTo(MAP);
   createComposterMarkers(city);
-  createPOICircles(state_key, city);
+  createPOICircles(city);
 
   let cardString = `<h4 class="card-title">${city.city}</h4>`;
   let cityBan = DATA.meta.bans.find(ban => (ban.lat === city.lat && city.lng === ban.lng))
-  if(cityBan !== undefined) { cardString += createBanString(cityBan) }
+  if (cityBan !== undefined) { cardString += createBanString(cityBan) }
 
   cardString += `<p class="card-text">Population: ${city.population}</p>`;
-  CITY_CARD.innerHTML = cardString;
+  info.update(cardString);
 }
 
 function createBanString(ban) {
@@ -221,8 +216,8 @@ function createBanString(ban) {
   let proposedDate = ban['If applicable, date proposed'];
   let enactedDate = ban['If applicable, date enacted '];
   let dateStringToUse = ``;
-  if(enactedDate.length !== 0 || proposedDate.length !== 0) {
-    if(enactedDate.length > 0) {
+  if (enactedDate.length !== 0 || proposedDate.length !== 0) {
+    if (enactedDate.length > 0) {
       dateStringToUse = `Date Enacted: ${enactedDate}`;
     } else {
       dateStringToUse = `Date Proposed: ${proposedDate}`;
@@ -283,9 +278,10 @@ function clearAll() {
   }
   MAP.setView([38, -95], 4);
   info.update();
+  CITY_STATE_AUTOCOMPLETE.val("");
 }
 
-function createPOICircles(state_key, city) {
+function createPOICircles(city) {
   let maxDistance = Math.floor(RADIUS_SLIDER.value * 1.6);
 
   DATA.meta.bans.forEach((ban, index) => {

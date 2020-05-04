@@ -38,47 +38,46 @@
   </div>
 
   <div class="container-fluid">
-
     <div class="row">
-      <!--- Leftmost Column --->
-      <div class="col-3">
-        <div class="container-fluid">
 
+      <!--- Leftmost Column --->
+      <div class="col-3 be-box-shadow-right be-new-and-map-control-height">
+        <div class="container-fluid">
           <!--- Message Card Carousel --->
-          <div class="row">
-            <div class="col mb-3 mt-2 be-box-shadow-right">
-              <div id="carouselExampleControls" class="carousel slide scrollable carousel-container" data-ride="carousel">
+          <div class="row justify-content-center">
+            <div class="col-8 mb-4">
+              <div id="beBlogCarousel" class="carousel slide carousel-container" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active center-carousel-text">
-                    <div class="card be-card blog-card" onclick="gotoBlogPost('https://becompostable.com/an-unforgettable-earth-day/')">
-                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2020/04/BetterEarth_EarthDay_Hero-400x250.png" class="card-img-top card-image-size blog-card" alt="...">
+                    <div class="card be-card" onclick="gotoBlogPost('https://becompostable.com/an-unforgettable-earth-day/')">
+                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2020/04/BetterEarth_EarthDay_Hero-400x250.png" class="card-img-top card-image-size" alt="...">
                       <div class="card-body">
                         <h5 class="card-title">An Unforgettable Earth Day</h5>
                       </div>
                     </div>
                   </div>
                   <div class="carousel-item center-carousel-text">
-                    <div class="card be-card blog-card" onclick="gotoBlogPost('https://becompostable.com/6-easy-steps-for-safely-ordering-takeout-during-covid-19/')">
-                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2020/04/6step-header-1-400x250.jpg" class="card-img-top card-image-size blog-card" alt="...">
+                    <div class="card be-card" onclick="gotoBlogPost('https://becompostable.com/6-easy-steps-for-safely-ordering-takeout-during-covid-19/')">
+                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2020/04/6step-header-1-400x250.jpg" class="card-img-top card-image-size" alt="...">
                       <div class="card-body">
                         <h5 class="card-title">6 Easy Steps for Safely Ordering Takeout During COVID-19</h5>
                       </div>
                     </div>
                   </div>
                   <div class="carousel-item center-carousel-text">
-                    <div class="card be-card blog-card" onclick="gotoBlogPost('https://becompostable.com/atlanta-lets-get-sustainable-packaging-to-those-that-need-it-most/')">
-                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2020/04/BE_SustainablePackagingReliefProgram_Hero-400x250.jpg" class="card-img-top card-image-size blog-card" alt="...">
+                    <div class="card be-card" onclick="gotoBlogPost('https://becompostable.com/atlanta-lets-get-sustainable-packaging-to-those-that-need-it-most/')">
+                      <img src="https://secureservercdn.net/166.62.110.232/cbj.b18.myftpupload.com/wp-content/uploads/2020/04/BE_SustainablePackagingReliefProgram_Hero-400x250.jpg" class="card-img-top card-image-size" alt="...">
                       <div class="card-body">
                         <h5 class="card-title">Let’s Get Sustainable Packaging to Those That Need It Most</h5>
                       </div>
                     </div>
                   </div>
                 </div>
-                <a class="carousel-control-prev carousel-control" href="#carouselExampleControls" role="button" data-slide="prev">
+                <a class="carousel-control-prev carousel-control" href="#beBlogCarousel" role="button" data-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next carousel-control" href="#carouselExampleControls" role="button" data-slide="next">
+                <a class="carousel-control-next carousel-control" href="#beBlogCarousel" role="button" data-slide="next">
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="sr-only">Next</span>
                 </a>
@@ -86,40 +85,53 @@
             </div>
           </div>
 
-          <!--- State List --->
-          <div class="row">
-            <div class="col scrollable scrollable-height be-box-shadow-right">
-              <ul id="stateList" class="list-group"></ul>
+          <!--- Map Controls --->
+          <div class="row justify-content-center">
+            <div class="col-8 mb-3 mt-2">
+              <input id="cityInput" type="text" class="form-control" placeholder="Where are you?" aria-label="User's City" aria-describedby="button-addon2">
             </div>
           </div>
-
+          <div class="row justify-content-center">
+            <div class="col-8 mb-2">
+              <label id="composter_radius" for="radius">Searching within 500 miles</label>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-4 mb-3">
+              <input type="range" id="radius" name="radius" min="0" max="5000" value="500">
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-8 mb-3">
+              <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllComposters()" type="button" id="button-addon2">Composters</button>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-8 mb-3">
+              <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllBans()" type="button" id="button-addon3">Legislation Statuses</button>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-8 mb-3">
+              <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllLobsters()" type="button" id="button-addon4">Red Lobster Locations</button>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-8 mb-3">
+              <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllCustomers()" type="button" id="button-addon5">BE Partners</button>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-8 mb-3">
+              <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="clearAll()" type="button" id="button-addon6">Clear Map</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!--- CentreTillRightmostEdge Column --->
       <div class="col-9">
         <div class="container-fluid">
-
-          <!--- Map Controls --->
-          <div class="row">
-            <div class="col">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="input-group">
-                  <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllComposters()" type="button" id="button-addon2">Composters</button>
-                </div>
-                <div class="input-group">
-                  <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllBans()" type="button" id="button-addon3">Legislation Statuses</button>
-                </div>
-                <div class="input-group">
-                  <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllLobsters()" type="button" id="button-addon4">Red Lobster Locations</button>
-                </div>
-                <div class="input-group">
-                  <button class="btn btn-outline-secondary be-btn-green-then-blue" onclick="showAllCustomers()" type="button" id="button-addon5">BE Partners</button>
-                </div>
-              </nav>
-            </div>
-          </div>
-
           <!--- Map --->
           <div class="row">
             <div class="col">
@@ -127,26 +139,85 @@
             </div>
           </div>
 
-          <!--- Cities Details --->
-          <div class="row">
-            <div class="col-6 scrollable scrollable-height-bottom">
-              <div class="input-group">
-                <input id="cityInput" type="text" class="form-control" placeholder="Where are you?" aria-label="User's City" aria-describedby="button-addon2">
-              </div>
-              <div class="input-group">
-                <span class="range-input">Searching within&nbsp</span>
-                <label id="composter_radius" for="radius">20 miles</label>&nbsp
-                <input type="range" id="radius" name="radius" min="0" max="100" value="20">
-              </div>
-              <div class="card be-card">
-                <div id="cityCard" class="card-body">
+          <div style="display: none;" id="treeHuggerContent">
+            <span id="bigRedX" onclick="showHideLegend()" class="close-index">&#10007</span>
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Implementation
+                <span class="badge badge-implementation badge-pill"> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Temporary COVID-19 Repeal
+                <span class="badge badge-temporary badge-pill"> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Proposal
+                <span class="badge badge-proposal badge-pill"> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Formal Enactment
+                <span class="badge badge-formal badge-pill"> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Pending
+                <span class="badge badge-pending badge-pill"> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Repealed
+                <span class="badge badge-repealed badge-pill"> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Composters
+                <img src="img/leaf-green.png" class="badge-image" />
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                BetterEarth Partners
+                <img src="img/be_customer_mark.png" class="badge-image" />
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Red Lobster Locations
+                <img src="img/red_lobster.png" class="badge-lobster-image" />
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                BetterEarth Facilities
+                <img src="img/be_bamboo.png" class="badge-image" />
+              </li>
+            </ul>
+            <div id="thBizBlogCarouseld" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active center-carousel-text">
+                  <div class="card transparent-card" onclick="gotoBlogPost('https://www.treehugger.com/environmental-policy/earth-day-still-happening.html')">
+                    <img src="https://media.treehugger.com/assets/images/2020/04/Peoples_Climate_March-2014-protest.jpg.860x0_q70_crop-scale.jpg" class="card-img-top card-image-size" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Yes, Earth Day is still happening – here's how to celebrate at home</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item center-carousel-text">
+                  <div class="card transparent-card" onclick="gotoBlogPost('https://www.treehugger.com/green-jobs/now-more-ever-we-need-arbor-day.html')">
+                    <img src="https://media.treehugger.com/assets/images/2019/04/CCC-tree-planter-.jpg.860x0_q70_crop-scale.jpg" class="card-img-top card-image-size" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Now, more than ever, we need Arbor Day</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item center-carousel-text">
+                  <div class="card transparent-card" onclick="gotoBlogPost('https://www.treehugger.com/corporate-responsibility/garment-workers-suffer-fashion-brands-cancel-orders.html')">
+                    <img src="https://media.treehugger.com/assets/images/2016/04/textile_worker_in_Dhaka.jpg.860x0_q70_crop-scale.jpg" class="card-img-top card-image-size" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Garment workers suffer as fashion brands cancel orders</h5>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-6 be-box-shadow-center">
-              <div class="scrollable scrollable-height-bottom">
-                <ul id="cityList" class="list-group"></ul>
-              </div>
+              <a class="carousel-control-prev carousel-control" href="#thBizBlogCarouseld" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next carousel-control" href="#thBizBlogCarouseld" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
             </div>
           </div>
         </div>
